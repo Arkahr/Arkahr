@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Turbo.Plugins.Arkahr
 {
-    //link test
+
     public class ClassesBuffBars : BasePlugin, IInGameTopPainter
     {        
         public CooldownBarsPainter CooldownBarsPainter {get;set;}
