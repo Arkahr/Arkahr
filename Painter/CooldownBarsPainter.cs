@@ -192,13 +192,13 @@ namespace Turbo.Plugins.Arkahr
 
         public void PaintSkills(List<IPlayerSkill> skillList, float x, float y, float w, float h, float s, Color color)
         {
-            var d = new TextDebug(500,500,Hud);
+            //var d = new TextDebug(500,500,Hud);
             foreach (var skill in skillList)
             {               
                 var rect =  new RectangleF(x, y , w, h);
                 BackgroundRect = rect;
-                d.addText(skill.SnoPower.NameLocalized + "\n");
-                d.Print();
+               // d.addText(skill.SnoPower.NameLocalized + "\n");
+               // d.Print();
                 PaintSkill(skill, rect, color);
                 y += s + h;
             }
@@ -233,7 +233,7 @@ namespace Turbo.Plugins.Arkahr
                 if (texture != null) texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
                 DrawTimeLeftNumbers(rect, activeBuffTimeleft);
                 //Draw skill name                
-                DrawName(barRect,skill.Buff.SnoPower.NameLocalized);                
+                DrawName(barRect,skill.SnoPower.NameLocalized);                
             } 
             if (!skill.BuffIsActive)
                 if (skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))
@@ -244,7 +244,7 @@ namespace Turbo.Plugins.Arkahr
                     if (texture != null) texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
                     DrawTimeLeftNumbers(rect, cooldownTimeleft); 
                     //Draw skill name
-                    DrawName(barRect,skill.Buff.SnoPower.NameLocalized);                    
+                    DrawName(barRect,skill.SnoPower.NameLocalized);                    
                 }
 
 
