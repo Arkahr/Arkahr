@@ -46,6 +46,11 @@ namespace Turbo.Plugins.Arkahr
             switch (heroClass)
                 {
                     case HeroClass.Barbarian: 
+                        playerSkills.Remove(powers.UsedBarbarianPowers.Whirlwind);
+                        playerSkills.Remove(powers.UsedBarbarianPowers.CallOfTheAncients);
+                        //track bonus from immortal king and act accordingly
+                        //playerSkills.Remove(powers.UsedBarbarianPowers.CallOfTheAncients);
+
                         break;
                     case HeroClass.Crusader:
                         break;

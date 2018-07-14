@@ -41,14 +41,15 @@ namespace Turbo.Plugins.Arkahr
                 BackgroundColor = new Color(255, "000"),
             };       
 
-            Colors = new Color[7];
-            Colors[0] = new Color(255, 159,  58, 232);  //Arcane          
-            Colors[1] = new Color(255,  97, 193, 244);  //Cold
-            Colors[2] = new Color(200, 244,  66,  66);  //Fire
-            Colors[3] = new Color(255, 255, 208,  68);  //Holy
-            Colors[4] = new Color(255,   4,  32, 135);  //Lightning
-            Colors[5] = new Color(255, 85, 80,  66);  //Physical
-            Colors[6] = new Color(255,  80, 226,  36);  //Poison       
+            Colors = new Color[8];
+            Colors[0] = new Color(255, 127,  127, 127);  //Cooldown          
+            Colors[1] = new Color(255, 159,  58, 232);  //Arcane          
+            Colors[2] = new Color(255,  97, 193, 244);  //Cold
+            Colors[3] = new Color(200, 244,  66,  66);  //Fire
+            Colors[4] = new Color(255, 255, 208,  68);  //Holy
+            Colors[5] = new Color(255,   4,  32, 135);  //Lightning
+            Colors[6] = new Color(255, 85, 80,  66);  //Physical
+            Colors[7] = new Color(255,  80, 226,  36);  //Poison       
                 
             _ruleCalculator = new BuffRuleCalculator(Hud);
 
@@ -153,7 +154,7 @@ namespace Turbo.Plugins.Arkahr
                 Color color = null;
                 if (best.Elapsed>0 && best.Elapsed<4) 
                 {
-                    color = Colors[_highestElemental_iconIndex - 1];                        
+                    color = Colors[_highestElemental_iconIndex];                        
                 } else 
                 {                     
                     color = CooldownBarsPainter.CooldownBarColor;

@@ -133,7 +133,17 @@ namespace Turbo.Plugins.Arkahr
         /// </summary>      
         public IconAlign IconAlign { get; set;}    
 
-        private TextDebug TextDebug;           
+        private TextDebug TextDebug;  
+        private IWatch FrameRateWatch;         
+
+
+        /// <summary>
+        /// How fast bar is painted
+        /// Max 60 per sec
+        /// Min 10 per sec
+        /// Default value: 10
+        /// </summary>          
+        public int BarFrameRate { get; set; } 
 
         public CooldownBarsPainter(IController hud, bool setDefaultStyle)
         {  
@@ -192,18 +202,17 @@ namespace Turbo.Plugins.Arkahr
 
         public void PaintSkills(List<IPlayerSkill> skillList, float x, float y, float w, float h, float s, Color color)
         {
-            //var d = new TextDebug(500,500,Hud);
+            //TODO skillist sort by cooldown            
             foreach (var skill in skillList)
             {               
                 var rect =  new RectangleF(x, y , w, h);
                 BackgroundRect = rect;
-               // d.addText(skill.SnoPower.NameLocalized + "\n");
-               // d.Print();
                 PaintSkill(skill, rect, color);
                 y += s + h;
             }
         }               
         
+
 
 
 // painting method for skills  ------------------------------------------------------------------------------------------------//
@@ -247,8 +256,7 @@ namespace Turbo.Plugins.Arkahr
                     DrawName(barRect,skill.SnoPower.NameLocalized);                    
                 }
 
-
-            /// Hint rectangle detection
+            /// TODO Hint rectangle detection 
 /*             if (Hud.Window.CursorInsideRect(iconRect.X, iconRect.Y, ShowIcon==true?iconRect.Width + IconSpacing:0 + barRect.Width, barRect.Height ) && ShowTooltips)
             {
                 if (info.Rule == null)
@@ -334,29 +342,51 @@ namespace Turbo.Plugins.Arkahr
         }
         
         private void DrawBar(BuffPaintInfo info, RectangleF rect, Color color) 
-        {               
-            float width = rect.Width;                        
+        {
+            //drawing 60 frames per sec
+
+            //draw 10 frames per sec
+            
+
+            float width = rect.Width;
             double tl = info.TimeLeft;
-            double te = info.Elapsed;                       
-            width = (float)(width * tl/ (tl + te ));   
+/*             TextDebug.addText(string.Format("r: {0} g: {1} b: {2}\n", color.Red, color.Green, color.Blue));
+            TextDebug.Print();
+            TextDebug.Clear(); */
+
+            //TODO framerate optimization
+/*             tl = tl *BarFrameRate;
+            tl = (Math.Floor(tl)/BarFrameRate);     */        
+
+            double te = info.Elapsed;  
+/*             te = te *BarFrameRate;
+            te = (Math.Floor(te)/BarFrameRate);   */            
+
+            width = (float)(width * tl/ (tl + te ));
+
+
             //Resize background if SizeMultiplier is set
             BackgroundRect = (SizeMultiplier!= 1 && SizeMultiplier!=0)?ResizeBar(rect):rect;
             //Paint background bar
             Hud.Render.CreateBrush(BackgroundColor.Alpha, BackgroundColor.Red, BackgroundColor.Green, BackgroundColor.Blue, StrokeWidth).DrawRectangle(BackgroundRect.X, BackgroundRect.Y, BackgroundRect.Width , BackgroundRect.Height);            
-            //Paint time bar
-            
+            //Paint time bar            
             Hud.Render.CreateBrush(color.Alpha, color.Red, color.Green, color.Blue, StrokeWidth).DrawRectangle(rect.X, rect.Y, width , rect.Height);
         }
 
         private void DrawBar( RectangleF rect, Color color, double timeleft, double time) 
         {               
-            float width = rect.Width;            
-            if (timeleft == time)  { 
-       
+            float width = rect.Width; 
+            if (timeleft==time){
+                width=(float)(BackgroundRect.Width/timeleft);
+            } else
 
-                width = (float)(BackgroundRect.Width / timeleft);   
-            } else                              
+            //if (timeleft != time)
+            { 
+                //TODOframerate optimization
+       /*          timeleft = timeleft *BarFrameRate;
+                timeleft = (Math.Floor(timeleft)/BarFrameRate); */
                 width = (float)(width * timeleft / time);   
+            }
             //Resize background if SizeMultiplier is set
             BackgroundRect = (SizeMultiplier!= 1 && SizeMultiplier!=0)?ResizeBar(rect):rect;
             //Paint background bar
@@ -370,11 +400,9 @@ namespace Turbo.Plugins.Arkahr
             NameFont.DrawText(layout, rect.X + TextSpacing + (float)Math.Ceiling(layout.Metrics.Height), rect.Y + (rect.Height - layout.Metrics.Height) / 2);            
         }
 
-
-
         private void DrawTimeLeftNumbers(RectangleF barRect, RectangleF iconRect, double timeleft)
         {
-            if (timeleft == 0) return; //dlatego nie rysowal liczb?
+            if (timeleft == 0) return;
             if (!ShowTimeLeftNumbers) return;
             //if (info.TimeLeftNumbersOverride != null && info.TimeLeftNumbersOverride.Value == false) return;
             
@@ -397,7 +425,7 @@ namespace Turbo.Plugins.Arkahr
 
         private double getTimeLeft(double timeleft) 
         {
-            if (timeleft == 0) return 0; //dlatego nie rysowal liczb?
+            if (timeleft == 0) return 0;
             if (!ShowTimeLeftNumbers) return 0;
             //if (info.TimeLeftNumbersOverride != null && info.TimeLeftNumbersOverride.Value == false) return;
             
@@ -420,7 +448,7 @@ namespace Turbo.Plugins.Arkahr
 
         private void DrawTimeLeftNumbers(RectangleF barRect, double timeleft)
         {
-            if (timeleft == 0) return; //dlatego nie rysowal liczb?
+            if (timeleft == 0) return; 
             if (!ShowTimeLeftNumbers) return;
             //if (info.TimeLeftNumbersOverride != null && info.TimeLeftNumbersOverride.Value == false) return;
             
@@ -439,11 +467,6 @@ namespace Turbo.Plugins.Arkahr
       
             DrawBarTimeLeftNumbers(barRect, text);
         }
-
-/*         private void IconTimeLeftNumbers(RectangleF rect, String text) {
-            var layout = TimeLeftFont.GetTextLayout(text);
-            TimeLeftFont.DrawText(layout, rect.X + (rect.Width - (float)Math.Ceiling(layout.Metrics.Width)) / 2.0f, rect.Y + (rect.Height - layout.Metrics.Height) / 2);
-        } */
 
         private void DrawBarTimeLeftNumbers(RectangleF rect, String text) {
             var layout = TimeLeftFont.GetTextLayout(text);                                                        
