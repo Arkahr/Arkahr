@@ -18,8 +18,6 @@ namespace Turbo.Plugins.Arkahr
             base.Load(hud);
 
             CooldownBarsPainter = new CooldownBarsPainter(Hud,true);
-            CooldownBarsPainter.BuffBarColor = new Color(200, "daa520");
-
             RuleCalculator = new BuffRuleCalculator(Hud);
             //RuleCalculator.SizeMultiplier = 0.75f;
 
@@ -39,6 +37,7 @@ namespace Turbo.Plugins.Arkahr
             RuleCalculator.Rules.Add(new BuffRule(266271) { MinimumIconCount = 1 }); // Speed
             RuleCalculator.Rules.Add(new BuffRule(260349) { MinimumIconCount = 1 }); // Empowered
             RuleCalculator.Rules.Add(new BuffRule(260348) { MinimumIconCount = 1 }); // Fleeting
+            
         }
 
         public void PaintTopInGame(ClipState clipState)
@@ -56,7 +55,7 @@ namespace Turbo.Plugins.Arkahr
             var x = uiMinimapRect.Left;
             var y = uiMinimapRect.Bottom + 200f;
             var w = uiMinimapRect.Width - iconSize;
-            CooldownBarsPainter.BuffBarColor = new Color(150,"daa520");
+            
             CooldownBarsPainter.PaintBuffs(RuleCalculator.PaintInfoList,uiMinimapRect.Left+30,uiMinimapRect.Bottom+200,uiMinimapRect.Width-30, 30,5);
         }
 

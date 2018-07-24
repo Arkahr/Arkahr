@@ -17,7 +17,7 @@ namespace Turbo.Plugins.Arkahr
     {
         public bool HideWhenUiIsHidden { get; set; }
         public CooldownBarsPainter CooldownBarsPainter { get; set; }
-        public Color[] Colors { get; set; }
+        public IBrush[] Brushes { get; set; }
         private BuffRuleCalculator _ruleCalculator;
         private int _highestElemental_iconIndex; 
         private double _coeElementsCount;
@@ -37,19 +37,18 @@ namespace Turbo.Plugins.Arkahr
             CooldownBarsPainter = new CooldownBarsPainter(Hud, true)
             {
                 ShowIcon = false,
-                TextAlign = TextAlign.Center,
-                BackgroundColor = new Color(255, "000"),
+                TextAlign = TextAlign.Center,                
             };       
 
-            Colors = new Color[8];
-            Colors[0] = new Color(255, 127,  127, 127);  //Cooldown          
-            Colors[1] = new Color(255, 159,  58, 232);  //Arcane          
-            Colors[2] = new Color(255,  97, 193, 244);  //Cold
-            Colors[3] = new Color(200, 244,  66,  66);  //Fire
-            Colors[4] = new Color(255, 255, 208,  68);  //Holy
-            Colors[5] = new Color(255,   4,  32, 135);  //Lightning
-            Colors[6] = new Color(255, 85, 80,  66);  //Physical
-            Colors[7] = new Color(255,  80, 226,  36);  //Poison       
+            Brushes = new IBrush[8];
+            Brushes[0] = Hud.Render.CreateBrush(255, 127, 127, 127, 0);  //CooldownColor          
+            Brushes[1] = Hud.Render.CreateBrush(255, 159,  58, 232, 0);  //Arcane          
+            Brushes[2] = Hud.Render.CreateBrush(255,  97, 193, 244, 0);  //Cold
+            Brushes[3] = Hud.Render.CreateBrush(255, 182,  49,  49, 0);  //Fire
+            Brushes[4] = Hud.Render.CreateBrush(255, 255, 208,  68, 0);  //Holy
+            Brushes[5] = Hud.Render.CreateBrush(255,   4,  32, 135, 0);  //Lightning
+            Brushes[6] = Hud.Render.CreateBrush(255,  85,  80,  66, 0);  //Physical
+            Brushes[7] = Hud.Render.CreateBrush(255,  80, 226,  36, 0);  //Poison      
                 
             _ruleCalculator = new BuffRuleCalculator(Hud);
 
@@ -151,18 +150,18 @@ namespace Turbo.Plugins.Arkahr
                 _ruleCalculator.PaintInfoList.Add(_tmp);
                 var best = _ruleCalculator.PaintInfoList[0];
                 
-                Color color = null;
+                IBrush brush = null;
                 if (best.Elapsed>0 && best.Elapsed<4) 
                 {
-                    color = Colors[_highestElemental_iconIndex];                        
+                    brush = Brushes[_highestElemental_iconIndex];                        
                 } else 
                 {                     
-                    color = CooldownBarsPainter.CooldownBarColor;
+                    brush = CooldownBarsPainter.CooldownBarBrush;
                     double _time = (_coeElementsCount - 1) * 4;
                     best.Elapsed = _time - best.TimeLeft;                         
                 }
 
-                CooldownBarsPainter.PaintBuff(best, x,y,w,h, color);
+                CooldownBarsPainter.PaintBuff(best, x,y,w,h, brush);
 
             } 
 

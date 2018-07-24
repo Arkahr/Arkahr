@@ -9,18 +9,20 @@ namespace Turbo.Plugins.Arkahr {
         private SharpDX.DirectWrite.TextLayout layout;
         public float X;
         public float Y;
+        private IController hud;
 
-        public TextDebug(float x, float y, IController Hud) 
+        public TextDebug(float x, float y, IController hud) 
         {
             X = x;
             Y = y;
+            this.hud = hud;
 
-            DebugFont = Hud.Render.CreateFont("tahoma", 10, 255, 255, 255, 255, false, false, 255, 0, 0, 0, true);
+            DebugFont = hud.Render.CreateFont("tahoma", 7, 255, 255, 255, 255, false, false, 255, 0, 0, 0, true);
             debugText = "";
         }
 
         public void addText(string text) 
-        {
+        {            
             debugText += text;
         }        
         
@@ -33,6 +35,9 @@ namespace Turbo.Plugins.Arkahr {
         {            
             layout = DebugFont.GetTextLayout(debugText.ToString());
             DebugFont.DrawText(layout, X , Y);      
+        }
+        public void setTextSize(int i) {
+            DebugFont = hud.Render.CreateFont("tahoma", i, 255, 255, 255, 255, false, false, 255, 0, 0, 0, true);
         }
     }
 }

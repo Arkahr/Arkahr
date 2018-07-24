@@ -15,6 +15,7 @@ namespace Turbo.Plugins.Arkahr
 		public TownPoI()
 		{
             Enabled = true;
+            KadalaEnabled = true;
 		}
 
         public override void Load(IController hud)
