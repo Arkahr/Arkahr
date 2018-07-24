@@ -122,7 +122,7 @@ namespace Turbo.Plugins.Arkahr
         /// </summary>      
         public IconAlign IconAlign { get; set;}    
 
-        private TextDebug TextDebug;  
+        //private TextDebug td;  
 
         //Skills with charges
         //TODO add runes to check for - skill chas charges then
@@ -171,7 +171,7 @@ namespace Turbo.Plugins.Arkahr
             //TextSpacing = 0f;              
             VerticalSpacing = 1;  
 
-            TextDebug = new TextDebug(100,200,hud);                 
+            //td = new TextDebug(100,200,hud);                 
         }
 
         public void PaintBuffs(List<BuffPaintInfo> infoList, float x, float y, float w, float h, float s, IBrush brush)
@@ -198,17 +198,31 @@ namespace Turbo.Plugins.Arkahr
         public void PaintSkills(List<IPlayerSkill> skillList, float x, float y, float w, float h, float s)
         {
             BackgroundRect = new RectangleF(x, y , w, h);
-            //TODO skillist sort by cooldown            
+            //TODO skillist sort by cooldown    
             foreach (var skill in skillList)
             {                             
-                PaintSkill(skill, new RectangleF(x, y , w, h));
-                if (s>0)
-                    y += s + h;                
-                else
-                    y += VerticalSpacing + h;                
+                if (skillPaintable(skill)) {
+                    PaintSkill(skill, new RectangleF(x, y , w, h));       
+                    if (s>0 )
+                        y += s + h;                
+                    else
+                        y += VerticalSpacing + h;                
+                }
             }
         }               
         
+        private bool skillPaintable(IPlayerSkill skill) {
+                //paint skill only if:
+                // is rechargable and recharging
+                // is active buff
+                // is not active buff but is on cooldown and cooldown time still ticking
+                if ((rechargeSkillsId.Contains(skill.SnoPower.Sno) && Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Next_Charge_Gained_time, skill.SnoPower.Sno, -1 )!=0) || 
+                skill.BuffIsActive || 
+                (!skill.BuffIsActive && skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))) {
+                    return true;
+                }
+            return false;
+        }
 
 //TODO
 
@@ -232,10 +246,8 @@ namespace Turbo.Plugins.Arkahr
             var texture = Hud.Texture.GetTexture(skill.SnoPower.NormalIconTextureId);
             if (IconAlign == IconAlign.Right) iconRect.X = barRect.Right + iconRect.Width + IconSpacing;  
             else iconRect.X = barRect.Left - iconRect.Width - IconSpacing;                 
-
-            
                
-            if (skill.BuffIsActive) {
+            if (skill.BuffIsActive ) {          
                 activeBuffTimeleft = skill.Buff.TimeLeftSeconds.Max(); //skill.Buff.TimeLeftSeconds[0];
                 activeBuffTime = activeBuffTimeleft + skill.Buff.TimeElapsedSeconds.Max();                
                 DrawBar(barRect, SkillBarBrush, activeBuffTimeleft, activeBuffTime);
@@ -244,8 +256,8 @@ namespace Turbo.Plugins.Arkahr
                 //Draw skill name                
                 DrawName(barRect,skill.SnoPower.NameLocalized);                
             } 
-            if (!skill.BuffIsActive)
-                if (skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))
+            if (!skill.BuffIsActive) {
+                if (skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))      
                 {
                     cooldownTimeleft = (skill.CooldownFinishTick - Hud.Game.CurrentGameTick) / 60.0d;
                     cooldownTime = (skill.CooldownFinishTick - skill.CooldownStartTick) / 60.0d;                
@@ -255,6 +267,28 @@ namespace Turbo.Plugins.Arkahr
                     //Draw skill name
                     DrawName(barRect,skill.SnoPower.NameLocalized);                    
                 }
+            }
+
+            if (rechargeSkillsId.Contains(skill.SnoPower.Sno)) { // rechargable skill
+                //if (skill.SnoPower.RuneNamesEnglish == "")
+
+                var Recharge_Start_Time = Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Recharge_Start_Time, skill.SnoPower.Sno, -1 );  
+                var Next_Charge_Gained_time = Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Next_Charge_Gained_time, skill.SnoPower.Sno, -1 );
+                if (Next_Charge_Gained_time==0) return; //skill is not recharging
+                cooldownTimeleft = (Next_Charge_Gained_time - Hud.Game.CurrentGameTick) / 60.0d;
+                cooldownTime = (Next_Charge_Gained_time - Recharge_Start_Time) / 60.0d;
+                DrawBar(rect, CooldownBarBrush, cooldownTimeleft, cooldownTime); 
+                if (texture != null) texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
+                DrawTimeLeftNumbers(rect, cooldownTimeleft); 
+                //DrawName(iconRect,skill.Charges.ToString());
+                var layout = NameFont.GetTextLayout(skill.Charges.ToString());                                                        
+                //NameFont.DrawText(layout, iconRect.X + (iconRect.Width - layout.Metrics.Width) / 2, iconRect.Y + (iconRect.Height - layout.Metrics.Height) / 2);            
+                NameFont.DrawText(layout, iconRect.X - iconRect.Width + layout.Metrics.Width, iconRect.Y + (iconRect.Height - layout.Metrics.Height) / 2);            
+
+                //Draw skill name
+                //DrawName(barRect,string.Format("[{0}] {1} - charging",skill.Charges,skill.SnoPower.NameLocalized));    
+                DrawName(barRect,string.Format("{0} - charging",skill.SnoPower.NameLocalized));    
+            }
         }
 
 // painting method for Buffs --------------------------------------------------------------------------------------------//
