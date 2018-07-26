@@ -1,3 +1,5 @@
+// 25/07/2018
+
 using Turbo.Plugins.Default;
 using System.Linq;
 using Turbo.Plugins.Jack.Extensions;
@@ -39,7 +41,8 @@ namespace Turbo.Plugins.Arkahr
             foreach (IPlayer player in Hud.Game.Players)
             {
                 var gemBuffs = player.Powers.UsedLegendaryGems.AllGemPrimaryBuffs().Where(b => b.Active);      
-                gemCount = gemBuffs.Count();           
+                gemCount = gemBuffs.Count();
+                
                 if (gemCount<3)  {
                     showWarning = true;
                     text += string.Format("{0} ({1}) -> {2} missing\n", player.HeroName, player.HeroClassDefinition.HeroClass, 3 - gemCount);                        
@@ -48,5 +51,10 @@ namespace Turbo.Plugins.Arkahr
             }
             if (showWarning) LabelDecorator.Paint(popUpX, popUpY, popUpWidth, popUpHeight, text, "No Gems!");                        
         }
+
+        // protected int countPlayerSocketsInJewelry() {
+        //     //if no sockets in jewelry,
+        //     return 3;
+        // }  
     }
 }
