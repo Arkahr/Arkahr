@@ -6,10 +6,10 @@ namespace Turbo.Plugins.Arkahr {
 
         public class Frame {
 
-            public int X;
-            public int Y;
-            public int Width;
-            public int Height;
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
 
             private int barHeight;
             public int BarSpacing;

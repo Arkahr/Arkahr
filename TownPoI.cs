@@ -7,7 +7,6 @@ namespace Turbo.Plugins.Arkahr
 	{        
         public WorldDecoratorCollection KadalaDecorator { get; set; }
         public WorldDecoratorCollection MyriamDecorator { get; set; }
-        public bool matsEnabled { get; set; }
         public bool KadalaEnabled { get; set; }
         public bool MyriamEnabled { get; set; } //enchanting npc
 
@@ -16,6 +15,7 @@ namespace Turbo.Plugins.Arkahr
 		{
             Enabled = true;
             KadalaEnabled = true;
+            MyriamEnabled = false;
 		}
 
         public override void Load(IController hud)
@@ -63,7 +63,7 @@ namespace Turbo.Plugins.Arkahr
                 }
             }
 
-            //Minimap GR keys counter
+            //GR keys counter -> move to TopBar plugin
             if (Hud.Game.IsInTown) {
                 var uiRect = Hud.Render.InGameBottomHudUiElement.Rectangle;
                 var snoItem = Hud.Inventory.GetSnoItem(2835237830);
@@ -81,12 +81,6 @@ namespace Turbo.Plugins.Arkahr
             {
                 if (item.SnoItem == snoItem) count += (int)item.Quantity;
             }
-
-
-
-            /* var MaterialCountFont = Hud.Render.CreateFont("tahoma", 6, 255, 190, 190, 190, false, false, false);
-            var layout = MaterialCountFont.GetTextLayout(ValueToString(count, ValueFormat.NormalNumberNoDecimal));
-            MaterialCountFont.DrawText(layout, x,y); */
 
             var GRFont = Hud.Render.CreateFont("tahoma", 6, 255, 61, 29, 91, true, false, false);
             var GRlayout = GRFont.GetTextLayout(ValueToString(count, ValueFormat.NormalNumberNoDecimal));

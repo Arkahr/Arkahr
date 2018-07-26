@@ -53,8 +53,7 @@ namespace Turbo.Plugins.Arkahr
         }
 
         // protected int countPlayerSocketsInJewelry() {
-        //     //if no sockets in jewelry,
-        //     return 3;
+        //     return how-much laking sokets;
         // }  
     }
 }
