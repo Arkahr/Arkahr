@@ -1,28 +1,30 @@
 using SharpDX;
-using SharpDX.Direct2D1;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using Turbo.Plugins.Default;
-using SharpDX.DirectWrite;
 
 //TODO
-//show cooldowns last activated on the bottom of bar list bars
+//FEATURES
+//1. show cooldowns last activated on the bottom of bar list bars
 //now it is in order they added to Rules list
+
+//2. Bar class for adding bars on the fly
+// public List<Bar> BarsList;
+//BarsList.Add( new Bar(IPlayerSkill) {Name, X,Y,Width,Height ... })
+//BarsList.Add( new Bar(IBuff) {Name, X,Y,Width,Height ... })
+
+//3. group of bars to show together as Frames
+//public List<Frame> Frames;
+//Frames.Add( new Frame(?) { Title ="Offensive CD", X = Position.TopCenter, Y = Position.Top, With, MaxBars .... } ))
 
 namespace Turbo.Plugins.Arkahr
 {   
-
     public class CooldownBarsPainter :  ITransparentCollection, ITransparent
     {
-
         public bool Enabled { get; set; }
         public IController Hud { get; set; }
-
-        //Text
-        //TODO opisac <Summary> reszte wlasciwosci i metod
-        public IFont TimeLeftFont { get; set; }
 
         /// <summary> 
         /// Bar text align.
@@ -37,11 +39,8 @@ namespace Turbo.Plugins.Arkahr
         /// </summary>
         public float TextSpacing  { get; set;} // to the right, -X if you want to move it to the left
 
-        public IFont StackFont { get; set; }
-
+        public IFont TimeLeftFont { get; set; }
         public IFont NameFont { get; set; }
-
-        public IBrush TimeLeftClockBrush { get; set; }
 
         /// <summary>
         /// Icon opacity.
@@ -59,54 +58,47 @@ namespace Turbo.Plugins.Arkahr
         /// By default it is shown.
         /// </summary>         
         public bool ShowTimeLeftNumbers { get; set; }
-        //public bool ShowBarTimeLeftNumbers { get; set; }
-        //public bool ShowIconTimeLeftNumbers { get; set; }
-        public bool HasIconBorder { get; set; }
-        
-        //Bar
-        //TODO ADD PROPERTY
-        public string BarName { get; set; }
-        //TODO ADD PROPERTY
-        
-        //TODO ADD PROPERTY
+     
+        /// <summary>
+        /// Color of buff bar.
+        /// </summary>              
         public IBrush BuffBarBrush { get; set;}    
-        public IBrush CooldownBarBrush { get; set;}
-
-        public IBrush SkillBarBrush { get; set;}
-        public IBrush SkillCooldownBarBrush { get; set;} //TODO
-
-        //TODO ADD PROPERTY
-        public float Width {get; set; }
 
         /// <summary>
-        /// Changes size of bar, and buff icon altogether.
-        /// Icon get size of bar height.
-        /// Negative value moves TimeLeftFont to he left.
+        /// Color of bar when skill is on cooldown.
+        /// </summary>              
+        public IBrush CooldownBarBrush { get; set;}
+
+        /// <summary>
+        /// Color of bar when skill is active.
+        /// </summary>      
+        public IBrush SkillBarBrush { get; set;}
+
+        /// <summary>
+        /// Changes size of bar, and icon altogether.
         /// </summary>        
         public float SizeMultiplier { get; set; }
-
-        public float StrokeWidth { get; set; }  
 
         /// <summary>
         /// Vertical spacing between bars.
         /// </summary>           
         public float VerticalSpacing { get; set; }  
 
-        //TODO      
-        public ITexture BackgroundTexture { get; set; }
+        //TODO    
+        //if there is a way of importing textures
+        //make bars wow style
+        private ITexture barTexture { get; set; }
 
         /// <summary>
         /// Bar background color.
         /// </summary>        
         public IBrush BackgroundBrush { get; set; }
 
-        public RectangleF BackgroundRect {get; set;}
-
         //Icon
         /// <summary>
         /// Space between bar and icon.
         /// Positive values push icon further away from bar edge. 
-        ///  Negative values pull icon to the bar edge and beyond. 
+        /// Negative values pull icon to the bar edge and beyond. 
         /// No matter of icon allign.
         /// </summary>  
         public float IconSpacing { get; set; }  
@@ -123,9 +115,13 @@ namespace Turbo.Plugins.Arkahr
         public IconAlign IconAlign { get; set;}    
 
         //private TextDebug td;  
+        private RectangleF BackgroundRect {get; set;}
+
+        //TODO 
+        // feature ad. 3)
+        //public List<Frame> Frames;        
 
         //Skills with charges
-        //TODO add runes to check for - skill chas charges then
         private static HashSet<uint> rechargeSkillsId = new HashSet<uint>() 
         { 
             129217, //DH Sentry all runes
@@ -146,32 +142,32 @@ namespace Turbo.Plugins.Arkahr
             if (setDefaultStyle)
             {
                 TimeLeftFont = Hud.Render.CreateFont("tahoma", 8, 255, 255, 255, 255, false, false, 255, 0, 0, 0, true);
-                StackFont = Hud.Render.CreateFont("tahoma", 9, 255, 255, 255, 255, false, false, 255, 0, 0, 0, true);
                 NameFont = Hud.Render.CreateFont("tahoma", 9, 255, 255, 255, 255, false, false, 255, 0, 0, 0, true);
-                TimeLeftClockBrush = Hud.Render.CreateBrush(220, 0, 0, 0, 0);
             }
             Opacity = 1f;
 
             ShowTooltips = true;
             ShowTimeLeftNumbers = true;
-            //ShowActiveBuffTimeLeft = false;
             SizeMultiplier = 1;
-            StrokeWidth = 0; 
             BuffBarBrush = Hud.Render.CreateBrush(255, 218, 165, 32, 0);
             BackgroundBrush = Hud.Render.CreateBrush(255, 0, 0, 0, 0);
             CooldownBarBrush = Hud.Render.CreateBrush(255, 112, 128, 144, 0);
 
             SkillBarBrush = Hud.Render.CreateBrush(255, 0, 204, 153, 0);
-            SkillCooldownBarBrush = CooldownBarBrush;
-            //IconSpacing = 0;    
+            IconSpacing = 0;    
             ShowIcon = true;      
-            //HasIconBorder = true;                        
-            //IconAlign = IconAlign.Left;  
+            IconAlign = IconAlign.Left;  
             TextAlign = TextAlign.Right;  
-            //TextSpacing = 0f;              
+            TextSpacing = 0f;              
             VerticalSpacing = 1;  
 
+            //Frames = new List<Frame>();
             //td = new TextDebug(100,200,hud);                 
+        }
+   
+        public void PaintBuffs(List<BuffPaintInfo> infoList, float x, float y, float w, float h, float s)        
+        {
+            PaintBuffs(infoList, x, y, w, h, s, BuffBarBrush);            
         }
 
         public void PaintBuffs(List<BuffPaintInfo> infoList, float x, float y, float w, float h, float s, IBrush brush)
@@ -182,77 +178,65 @@ namespace Turbo.Plugins.Arkahr
                 y += s + h;
             }
         }    
-                   
-        public void PaintBuffs(List<BuffPaintInfo> infoList, float x, float y, float w, float h, float s)        
-        {
-            PaintBuffs(infoList, x, y, w, h, s, BuffBarBrush);            
-        }
 
         public void PaintBuff(BuffPaintInfo info, float x, float y, float w, float h, IBrush brush) 
         {
-            
             BackgroundRect = new RectangleF(x, y , w, h);
-            Paint(info, new RectangleF(x, y , w, h), brush);
+            PaintBuff(info, new RectangleF(x, y , w, h), brush);
         }
 
-        public void PaintSkills(List<IPlayerSkill> skillList, float x, float y, float w, float h, float s)
+        public void PaintSkills(List<IPlayerSkill> skillList, float x, float y, float w, float h)
         {
             BackgroundRect = new RectangleF(x, y , w, h);
-            //TODO skillist sort by cooldown    
+            //TODO skills sort by cooldown    
             foreach (var skill in skillList)
             {                             
-                if (skillPaintable(skill)) {
-                    PaintSkill(skill, new RectangleF(x, y , w, h));       
-                    if (s>0 )
-                        y += s + h;                
-                    else
-                        y += VerticalSpacing + h;                
+                if (skillPaintable(skill)) { 
+                    PaintSkill(skill, new RectangleF(x, y , w, h));                           
+                    y += VerticalSpacing + h;                             
                 }
             }
         }               
         
         private bool skillPaintable(IPlayerSkill skill) {
-                //paint skill only if:
-                // is rechargable and recharging
-                // is active buff
-                // is not active buff but is on cooldown and cooldown time still ticking
-                if ((rechargeSkillsId.Contains(skill.SnoPower.Sno) && Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Next_Charge_Gained_time, skill.SnoPower.Sno, -1 )!=0) || 
+            //paint skill only if:
+            // is rechargable and recharging or
+            // is active buff or
+            // is not active buff but is on cooldown and cooldown time still ticking
+            if ((rechargeSkillsId.Contains(skill.SnoPower.Sno) && 
+                Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Next_Charge_Gained_time, skill.SnoPower.Sno, -1 )!=0) || 
                 skill.BuffIsActive || 
-                (!skill.BuffIsActive && skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))) {
-                    return true;
-                }
+                (!skill.BuffIsActive && skill.IsOnCooldown && skill.CooldownFinishTick > Hud.Game.CurrentGameTick)) {
+                    return true;   
+            }
             return false;
         }
 
-//TODO
-
-//CooldownBarsPainter.PaintSkill(IPlayerSkill skill, float x, float y, float w, float h, bool showIcon)
-
-// painting method for skills  ------------------------------------------------------------------------------------------------//
+        // painting method for skills
         public void PaintSkill(IPlayerSkill skill, RectangleF rect)
         {    
             if (skill == null) return;
             if (Opacity == 0) return;
-            double activeBuffTimeleft = 0;
-            double activeBuffTime = 0;
-            double cooldownTimeleft = 0;
-            double cooldownTime = 0;
 
+            double activeBuffTimeleft = 0;
+            double cooldownTimeleft = 0;
+            double duration = 0; //elapsed + left
             
             var barRect = (SizeMultiplier!=0 && SizeMultiplier!=1)?ResizeBar(rect):rect;
-            //icon new coords            
+            //icons gets size of bar height
             var iconSize = barRect.Height; 
+            //icon new coords            
             var iconRect = new RectangleF(barRect.Left - IconSpacing - iconSize, barRect.Y, iconSize, iconSize);            
             var texture = Hud.Texture.GetTexture(skill.SnoPower.NormalIconTextureId);
             if (IconAlign == IconAlign.Right) iconRect.X = barRect.Right + iconRect.Width + IconSpacing;  
             else iconRect.X = barRect.Left - iconRect.Width - IconSpacing;                 
                
             if (skill.BuffIsActive ) {          
-                activeBuffTimeleft = skill.Buff.TimeLeftSeconds.Max(); //skill.Buff.TimeLeftSeconds[0];
-                activeBuffTime = activeBuffTimeleft + skill.Buff.TimeElapsedSeconds.Max();                
-                DrawBar(barRect, SkillBarBrush, activeBuffTimeleft, activeBuffTime);
+                activeBuffTimeleft = skill.Buff.TimeLeftSeconds.Max(); 
+                duration = activeBuffTimeleft + skill.Buff.TimeElapsedSeconds.Max();                
+                DrawBar(barRect, SkillBarBrush, activeBuffTimeleft, duration);
                 if (texture != null) texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
-                DrawTimeLeftNumbers(rect, activeBuffTimeleft);
+                DrawTimeLeftNumbers(rect, getText(activeBuffTimeleft));
                 //Draw skill name                
                 DrawName(barRect,skill.SnoPower.NameLocalized);                
             } 
@@ -260,43 +244,50 @@ namespace Turbo.Plugins.Arkahr
                 if (skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))      
                 {
                     cooldownTimeleft = (skill.CooldownFinishTick - Hud.Game.CurrentGameTick) / 60.0d;
-                    cooldownTime = (skill.CooldownFinishTick - skill.CooldownStartTick) / 60.0d;                
-                    DrawBar(rect, CooldownBarBrush, cooldownTimeleft, cooldownTime); 
+                    duration = (skill.CooldownFinishTick - skill.CooldownStartTick) / 60.0d;                
+                    DrawBar(rect, CooldownBarBrush, cooldownTimeleft, duration ); 
                     if (texture != null) texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
-                    DrawTimeLeftNumbers(rect, cooldownTimeleft); 
+                    DrawTimeLeftNumbers(rect, getText(cooldownTimeleft)); 
                     //Draw skill name
                     DrawName(barRect,skill.SnoPower.NameLocalized);                    
                 }
             }
 
             if (rechargeSkillsId.Contains(skill.SnoPower.Sno)) { // rechargable skill
-                //if (skill.SnoPower.RuneNamesEnglish == "")
+                //if (skill.SnoPower.RuneNamesEnglish == "") 
+                //Rading skill sno attributes automaticaly resolves problem of choosing skill runes that makes skill rechargeable
 
                 var Recharge_Start_Time = Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Recharge_Start_Time, skill.SnoPower.Sno, -1 );  
                 var Next_Charge_Gained_time = Hud.Game.Me.GetAttributeValue(Hud.Sno.Attributes.Next_Charge_Gained_time, skill.SnoPower.Sno, -1 );
                 if (Next_Charge_Gained_time==0) return; //skill is not recharging
                 cooldownTimeleft = (Next_Charge_Gained_time - Hud.Game.CurrentGameTick) / 60.0d;
-                cooldownTime = (Next_Charge_Gained_time - Recharge_Start_Time) / 60.0d;
-                DrawBar(rect, CooldownBarBrush, cooldownTimeleft, cooldownTime); 
+                duration = (Next_Charge_Gained_time - Recharge_Start_Time) / 60.0d;
+                DrawBar(rect, CooldownBarBrush, cooldownTimeleft, duration); 
                 if (texture != null) texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
-                DrawTimeLeftNumbers(rect, cooldownTimeleft); 
-                //DrawName(iconRect,skill.Charges.ToString());
+                DrawTimeLeftNumbers(rect, getText(cooldownTimeleft)); 
                 var layout = NameFont.GetTextLayout(skill.Charges.ToString());                                                        
-                //NameFont.DrawText(layout, iconRect.X + (iconRect.Width - layout.Metrics.Width) / 2, iconRect.Y + (iconRect.Height - layout.Metrics.Height) / 2);            
                 NameFont.DrawText(layout, iconRect.X - iconRect.Width + layout.Metrics.Width, iconRect.Y + (iconRect.Height - layout.Metrics.Height) / 2);            
-
-                //Draw skill name
-                //DrawName(barRect,string.Format("[{0}] {1} - charging",skill.Charges,skill.SnoPower.NameLocalized));    
-                DrawName(barRect,string.Format("{0} - charging",skill.SnoPower.NameLocalized));    
+                //Draw name and "charging" message
+                DrawName(barRect,string.Format("{0} - charging", skill.SnoPower.NameLocalized));    
             }
         }
 
-// painting method for Buffs --------------------------------------------------------------------------------------------//
-        protected void Paint(BuffPaintInfo info, RectangleF rect,  IBrush brush)
+
+        // protected void PaintFrames() {
+        //     // Bar tmpBar = bar;
+        //     foreach (var frame in Frames)
+        //     {
+        //         frame.Paint();
+        //     }
+
+        // }
+        
+        protected void PaintBuff(BuffPaintInfo info, RectangleF rect,  IBrush brush)
         {                        
             var barRect = (SizeMultiplier!=0 && SizeMultiplier!=1)?ResizeBar(rect):rect;
             var firstIcon = info.Icons[0];
-            var isDebuff = firstIcon.Harmful;
+            //What it does?
+            //var isDebuff = firstIcon.Harmful;
 
             //icon new coords            
             var iconSize = barRect.Height;
@@ -306,19 +297,14 @@ namespace Turbo.Plugins.Arkahr
             if (ShowIcon) 
             {
                 if (IconAlign == IconAlign.Right) iconRect.X = barRect.Right + IconSpacing;                                                  
-                    if (info.BackgroundTexture != null)
+                    if (info.BackgroundTexture != null) 
                     {
-                        info.BackgroundTexture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);
+                        info.BackgroundTexture.Draw(iconRect , Opacity);
                     }
-                    info.Texture.Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height , Opacity);            
-
-                    if (HasIconBorder)
-                    {
-                        (isDebuff ? Hud.Texture.DebuffFrameTexture : Hud.Texture.BuffFrameTexture).Draw(iconRect.X, iconRect.Y, iconRect.Width, iconRect.Height, Opacity);
-                    }                               
+                    info.Texture.Draw(iconRect , Opacity);                                    
             }
             //Paint bar
-            DrawBar(info, barRect, brush);
+            DrawBar(barRect, brush, info.TimeLeft, info.TimeLeft + info.Elapsed);
 
             /// Hint rectangle detection
             if (Hud.Window.CursorInsideRect(iconRect.X, iconRect.Y, ShowIcon==true?iconRect.Width + IconSpacing:0 + barRect.Width, barRect.Height ) && ShowTooltips)
@@ -345,35 +331,19 @@ namespace Turbo.Plugins.Arkahr
                 }
             }
             
-            //Draw cooldown text
-            DrawTimeLeftNumbers(barRect, iconRect, info.TimeLeft);
+            //Draw cooldown text            
+            DrawTimeLeftNumbers(barRect, getText(info.TimeLeft));            
         }
         
-        private void DrawBar(BuffPaintInfo info, RectangleF rect, IBrush brush) 
-        {
-            float width = rect.Width;    
-            width = (float)((double)width * info.TimeLeft/ (info.TimeLeft + info.Elapsed ));
-            //Resize background if SizeMultiplier is set
-            BackgroundRect = (SizeMultiplier!= 1 && SizeMultiplier!=0)?ResizeBar(rect):rect;
-            //Paint background bar
-            BackgroundBrush.DrawRectangle(BackgroundRect.X, BackgroundRect.Y, BackgroundRect.Width , BackgroundRect.Height);            
-            //Paint time bar            
-            brush.DrawRectangle(rect.X, rect.Y, width , rect.Height);
-        }
-
         private void DrawBar( RectangleF rect, IBrush brush, double timeleft, double time) 
         {               
-            float width = rect.Width; //?
-            if (timeleft==time){
-                width=(float)(BackgroundRect.Width/timeleft);
-            } else
-            { 
-                width = (float)(width * timeleft / time);   
-            }
+            float width = rect.Width; 
+            //resize width according to time left
+            width = (float)(width * timeleft / time);   
             //Resize background if SizeMultiplier is set
             BackgroundRect = (SizeMultiplier!= 1 && SizeMultiplier!=0)?ResizeBar(rect):rect;
             //Paint background bar
-            BackgroundBrush.DrawRectangle(BackgroundRect.X, BackgroundRect.Y, BackgroundRect.Width , BackgroundRect.Height);            
+            BackgroundBrush.DrawRectangle(BackgroundRect);            
             //Paint cooldown bar            
             brush.DrawRectangle(rect.X, rect.Y, width , rect.Height);
         }
@@ -383,11 +353,10 @@ namespace Turbo.Plugins.Arkahr
             NameFont.DrawText(layout, rect.X + TextSpacing + (float)Math.Ceiling(layout.Metrics.Height), rect.Y + (rect.Height - layout.Metrics.Height) / 2);            
         }
 
-        private void DrawTimeLeftNumbers(RectangleF barRect, RectangleF iconRect, double timeleft)
+        private string getText(double timeleft)
         {
-            if (timeleft == 0) return;
-            if (!ShowTimeLeftNumbers) return;
-            //if (info.TimeLeftNumbersOverride != null && info.TimeLeftNumbersOverride.Value == false) return;
+            if (timeleft == 0) return "0"; 
+            if (!ShowTimeLeftNumbers) return "";
             
             var text = "";
             if (timeleft > 1.0f)
@@ -401,35 +370,10 @@ namespace Turbo.Plugins.Arkahr
                 else text = timeleft.ToString("F0", CultureInfo.InvariantCulture);
             }
             else text = timeleft.ToString("F1", CultureInfo.InvariantCulture);
-      
-            DrawBarTimeLeftNumbers(barRect, text);
-            //DrawIconTimeLeftNumbers(iconRect, text);
+            return text;
         }
 
-
-        private void DrawTimeLeftNumbers(RectangleF barRect, double timeleft)
-        {
-            if (timeleft == 0) return; 
-            if (!ShowTimeLeftNumbers) return;
-            //if (info.TimeLeftNumbersOverride != null && info.TimeLeftNumbersOverride.Value == false) return;
-            
-            var text = "";
-            if (timeleft > 1.0f)
-            {
-                var mins = Convert.ToInt32(Math.Floor(timeleft / 60.0d));
-                var secs = Math.Floor(timeleft - mins * 60.0d);
-                if (timeleft >= 60)
-                {
-                    text = mins.ToString("F0", CultureInfo.InvariantCulture) + ":" + (secs < 10 ? "0" : "") + secs.ToString("F0", CultureInfo.InvariantCulture);
-                }
-                else text = timeleft.ToString("F0", CultureInfo.InvariantCulture);
-            }
-            else text = timeleft.ToString("F1", CultureInfo.InvariantCulture);
-      
-            DrawBarTimeLeftNumbers(barRect, text);
-        }
-
-        private void DrawBarTimeLeftNumbers(RectangleF rect, String text) {
+        private void DrawTimeLeftNumbers(RectangleF rect, string text) {
             var layout = TimeLeftFont.GetTextLayout(text);                                                        
             if (TextAlign == TextAlign.Center) TimeLeftFont.DrawText(layout, rect.X + (rect.Width - (float)Math.Ceiling(layout.Metrics.Width)) / 2.0f, rect.Y + (rect.Height - layout.Metrics.Height) / 2);        
             else if (TextAlign == TextAlign.Right) 
@@ -452,11 +396,11 @@ namespace Turbo.Plugins.Arkahr
             return rect;
         }
 
+        //how to use it for bars ? ->bar
         public IEnumerable<ITransparent> GetTransparents()
         {
             yield return TimeLeftFont;
-            yield return StackFont;
-            yield return TimeLeftClockBrush;
+            yield return NameFont;
             yield return this;
         }
     }
