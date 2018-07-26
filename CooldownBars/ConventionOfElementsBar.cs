@@ -37,7 +37,8 @@ namespace Turbo.Plugins.Arkahr
             CooldownBarsPainter = new CooldownBarsPainter(Hud, true)
             {
                 ShowIcon = false,
-                TextAlign = TextAlign.Center,                
+                TextAlign = TextAlign.Center,    
+                ShowTooltips = false            
             };       
 
             Brushes = new IBrush[8];

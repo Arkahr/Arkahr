@@ -10,7 +10,7 @@ namespace Turbo.Plugins.Arkahr
 
         public RiftBuffsBars()
         {
-            Enabled = false;
+            Enabled = true;
         }
 
         public override void Load(IController hud)
