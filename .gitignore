@@ -1,9 +1,4 @@
-CooldownBars/PlayerMeBars.cs
-CooldownBars/PlayersBars.cs
 BarBuffPainterUse.txt
-UI/Panel.cs
-Debug/PowerDebug.cs
 CooldownBars/ConventionOfElementsBarS.cs
 Painter/CooldownBar.cs
 Painter/use of coe barss.txt
-Tests/Rectangle.cs
