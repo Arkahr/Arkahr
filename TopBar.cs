@@ -4,9 +4,12 @@ using SharpDX;
 
 namespace Turbo.Plugins.Arkahr
 {
-    public class TopBar : BasePlugin, IInGameWorldPainter
+    public class TopBar : BasePlugin, IInGameTopPainter
 	{        
         private Panel topBarPanel;
+        public HorizontalTopLabelList LabelList { get; private set; }
+
+
 		public TopBar()
 		{
             Enabled = false;
@@ -17,9 +20,12 @@ namespace Turbo.Plugins.Arkahr
             base.Load(hud);                
         }
 		
-		public void PaintWorld(WorldLayer layer)
-		{
-          
-		}
+        public void PaintTopInGame(ClipState clipState)
+        {
+            if (clipState != ClipState.BeforeClip) return;
+            if ((Hud.Game.MapMode == MapMode.WaypointMap) || (Hud.Game.MapMode == MapMode.ActMap)) return;
+
+            LabelList.Paint();
+        }
     }
 }
