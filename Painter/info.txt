@@ -1,0 +1,27 @@
+co mnie interesuje 
+
+pozycja x,y
+obszar w,h
+
+gdzie szukac informacji o cooldownie i czasie trwania czaru (ISnoPower)
+    1) buff     -> BuffRule  (List<BuffRule> BuffRuleCalculator.Rules )
+                -> BuffPaintInfo po wywolaniu GetPaintInfo()
+
+    2) skill    -> IPlayerSkill
+
+   2a) skill z ładunkami (charges)
+                -> attibutes u aktualnej postaci
+
+barwa background
+
+moze zaleznie od rodzajuczaru : (ale nie musi jesli uzytkownicy sie tego nie domagaja)
+barwa cooldown
+barwa active               
+czy ikona
+font
+
+
+drugorzedne
+odstepy poziome
+pozycja liczb cooldownu
+
