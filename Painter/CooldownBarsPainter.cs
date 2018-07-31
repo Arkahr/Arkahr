@@ -242,8 +242,9 @@ namespace Turbo.Plugins.Arkahr
                 //Draw skill name                
                 DrawName(barRect,skill.SnoPower.NameLocalized);                
             } 
-            if (!skill.BuffIsActive) {
-                if (skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))      
+            else // !skill.BuffIsActive            
+            {
+                if (skill.IsOnCooldown && (skill.CooldownFinishTick > Hud.Game.CurrentGameTick))
                 {
                     cooldownTimeleft = (skill.CooldownFinishTick - Hud.Game.CurrentGameTick) / 60.0d;
                     duration = (skill.CooldownFinishTick - skill.CooldownStartTick) / 60.0d;                
