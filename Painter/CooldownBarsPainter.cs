@@ -349,6 +349,7 @@ namespace Turbo.Plugins.Arkahr
             BackgroundBrush.DrawRectangle(BackgroundRect);            
             //Paint cooldown bar            
             brush.DrawRectangle(rect.X, rect.Y, width , rect.Height);
+            
         }
 
         private void DrawName(RectangleF rect, String text) {

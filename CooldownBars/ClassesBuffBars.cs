@@ -71,10 +71,12 @@ namespace Turbo.Plugins.Arkahr
                 }
 
             var uiMinimapRect = Hud.Render.MinimapUiElement.Rectangle;
-            var h = 30f;
+            //var h = 30f;
+            var h = 22f;
             var x = uiMinimapRect.Left;
             var y = uiMinimapRect.Bottom + 275f;
-            var w = uiMinimapRect.Width;            
+            //var w = uiMinimapRect.Width;            
+            var w = 209f;            
 
             if (playerSkills!=null && playerSkills.Count>0)                         
                 CooldownBarsPainter.PaintSkills(playerSkills, x, y, w, h);              

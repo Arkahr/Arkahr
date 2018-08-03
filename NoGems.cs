@@ -12,7 +12,7 @@ namespace Turbo.Plugins.Arkahr
 
         public NoGems()
         {
-            Enabled = false;
+            Enabled = true;
         }
 
         public override void Load(IController hud)

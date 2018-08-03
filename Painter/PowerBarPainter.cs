@@ -178,7 +178,7 @@ namespace Turbo.Plugins.Arkahr
             var y = bar.Y +  (bar.Height - textLayout.Metrics.Height) / 2;           
             TextFont.DrawText(textLayout, x, y);
         }        
-        // Maybe public voidPaint(Bar bar) ? //what it gives?
+        // Maybe public void Paint(Bar bar) ? //what it gives?
 
         public void Paint(RectangleF rect, List<BuffPaintInfo> listBuffPaintInfo) 
         {
