@@ -1,14 +1,17 @@
-# TurboHud-Arkahr
+# Arkahr
 Turbo.Plugins.Arkahr
 ```diff
 + LEFT click to download zip-> unzip -> Save As -> plugins/Arkahr/
 ```
 
 #### [TownPOI.cs]
-Adds labels for NPCs in town to localize it offscreen. No need for glimpse on minimap ( and on count for Blood Shards). Just quality of life for me.
+Adds minimap texts and labels for NPCs in town to find them easier.
 
-- Adds label to Kadala with bood shard counter
-- Adds label for enchanting cauldron
+- Enchanting cauldron directions label.
+- Followers minimap text.
+- Uber Bosses minimap text.
+
+- ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One [Code](https://pastebin.com/qvbpXQif)
 
 ## Cooldown Bars
 
