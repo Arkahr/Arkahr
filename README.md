@@ -4,7 +4,7 @@ Turbo.Plugins.Arkahr
 + LEFT click to download zip-> unzip -> Save As -> plugins/Arkahr/
 ```
 
-#### [TownPOI.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
+#### [TownPOIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
 
 - Enchanting cauldron directions label.
@@ -15,6 +15,12 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 
 ## Cooldown Bars
 
-### Cooldown bar for Convention of Elements
-### Cooldown Bars for rift pylons
-### Cooldown Bars for player skills
+#### [ConventionOfElementsBarPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/ConventionOfElementsBarPlugin.cs)
+Shows time to your greates elemental bonus when wearing Convention of Elements ring in form of shrinkig bar.
+
+- Configurable to place it somewhere else, change size, color of elements, opacity, switch off text numbers.
+
+#### Cooldown Bars for rift pylons
+Cooldown for rift pylons in form of shrinking bars.
+#### Cooldown Bars for player skills
+Cooldowns for class skills that you would to track in form of shrinking bars.
