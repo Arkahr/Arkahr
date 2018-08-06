@@ -11,7 +11,7 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 - Followers minimap text.
 - Uber Bosses minimap text.
 
-- ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One [Code](https://pastebin.com/qvbpXQif)
+- ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One ( [Code](https://pastebin.com/qvbpXQif) )
 
 ## Cooldown Bars
 
