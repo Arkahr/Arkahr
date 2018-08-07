@@ -12,12 +12,13 @@ namespace Turbo.Plugins.Arkahr
         public WorldDecoratorCollection EnchantingCouldronDecorator;
         public WorldDecoratorCollection FollowerMinimapDecorator;
         public bool UberEnabled;
-        public bool EnchantingCouldronEnabled; //enchanting npc
+        public bool EnchantingCouldronEnabled;
         public bool FollowersEnabled;
 
 		public TownPoIPlugin()
 		{
             Enabled = true;
+
             UberEnabled = true;
             EnchantingCouldronEnabled = true;
             FollowersEnabled = true;
@@ -68,7 +69,7 @@ namespace Turbo.Plugins.Arkahr
                 if (EnchantingCouldron.Any()) EnchantingCouldronDecorator.Paint(layer, EnchantingCouldron.First(), EnchantingCouldron.First().FloorCoordinate, "Enchant");
             }           
             
-            // Followers Enabled toggle on/off
+            // Followers text toggle on/off
             if (FollowersEnabled) {
                 var followers = Hud.Game.Actors.Where(x => x.DisplayOnOverlay && (x.SnoActor.Sno == 4062 || x.SnoActor.Sno == 4538 ||x.SnoActor.Sno == 4644));
                 if (followers.Any()) {   
