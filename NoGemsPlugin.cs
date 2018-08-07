@@ -31,7 +31,7 @@ namespace Turbo.Plugins.Arkahr
                 TitleFont = Hud.Render.CreateFont("tahoma", 10, 255, 255, 0, 0, true, false, false),
             };
 
-            playerMissingLegendaryGemsPowersCount = (p) => 3 - p.Powers.UsedLegendaryGems.AllGemPrimaryBuffs().Count(b => b.Active&& b.SnoPower.Sno != 403459 && b.SnoPower.Sno != 454736);
+            playerMissingLegendaryGemsPowersCount = (p) => 3 - p.Powers.UsedLegendaryGems.AllGemPrimaryBuffs().Count(b => b.Active && b.SnoPower.Sno != 403459 && b.SnoPower.Sno != 454736);
             messageFormat = (p) => string.Format("{0} ({1}) -> {2} missing\n", p.BattleTagAbovePortrait, p.HeroClassDefinition.HeroClass, playerMissingLegendaryGemsPowersCount(p));
         }
 
@@ -59,7 +59,7 @@ namespace Turbo.Plugins.Arkahr
 
             var popUpWidth = longestLineInText * 8f; //make popup stretch with longer lines
             var popUpHeight = 110f;
-            LabelDecorator.Paint(Hud.Window.Size.Width / 2f + popUpWidth + 10f, 0, popUpWidth, popUpHeight, text, "No Gems!");
+            LabelDecorator.Paint(Hud.Window.Size.Width / 2f - popUpWidth/2 + 10f, 0, popUpWidth, popUpHeight, text, "No Gems!");
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Turbo.Plugins.Arkahr
             return Hud.Game
                 .Players
                 .Where(p => p.CurrentLevelNormal >= 70)
-                .Where(p => p.Powers.UsedLegendaryGems.AllGemPrimaryBuffs().Count(b => b.Active&& b.SnoPower.Sno != 403459 && b.SnoPower.Sno != 454736) < 3)
+                .Where(p => p.Powers.UsedLegendaryGems.AllGemPrimaryBuffs().Count(b => b.Active && b.SnoPower.Sno != 403459 && b.SnoPower.Sno != 454736) < 3)
                 .ToList();
         }
     }
