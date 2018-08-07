@@ -44,7 +44,7 @@ namespace Turbo.Plugins.Arkahr
 
         public ConventionOfElementsBarPlugin()
         {
-            Enabled = false;
+            Enabled = true;
             ShowTimeLeftNumbers = true;
             user = false;
             Opacity = 1f;
