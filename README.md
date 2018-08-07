@@ -4,8 +4,7 @@ Turbo.Plugins.Arkahr
 + LEFT click to download zip-> unzip -> Save As -> plugins/Arkahr/
 ```
 
-### TownPOIPlugin
-#### [TownPOIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
+#### [TownPoIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
 
 - Enchanting cauldron directions label.
