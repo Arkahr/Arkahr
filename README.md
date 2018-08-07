@@ -6,6 +6,7 @@ Turbo.Plugins.Arkahr
 
 <hr>
 <img style="float: left;" src="READMEpics/TownPoIPlugin.png">
+
 #### [TownPoIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
 
@@ -17,7 +18,7 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 <hr>
 <img style="float: left;" src="READMEpics/NoGemsPlugin.png">
 
-#### [NoGemsPlugin.cs]((https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/NoGemsPlugin.cs)
+#### [NoGemsPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/NoGemsPlugin.cs)
 Adds Popup when someone in your group does not have legendary gem in jewelery socket.
 
 - Popup will not show if: someone is lower than 70lvl, you are not in town, there are no players missing gems (obviously)
