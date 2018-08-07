@@ -3,8 +3,9 @@ Turbo.Plugins.Arkahr
 ```diff
 + LEFT click to download zip-> unzip -> Save As -> plugins/Arkahr/
 ```
+
 <hr>
-![alt text](READMEpics/TownPoIPlugin.png)
+![TownPoIPlugin](READMEpics/TownPoIPlugin.png)
 #### [TownPoIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
 
@@ -13,8 +14,9 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 - Uber Bosses minimap text.
 
 - ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One ( [Code](https://pastebin.com/qvbpXQif) )
+
 <hr>
-![alt text](READMEpics/NoGemsPlugin.png)
+![NoGemsPlugin](READMEpics/NoGemsPlugin.png)
 #### [NoGemsPlugin.cs]()
 Adds Popup when someone in your group does not have legendary gem in jewelery socket.
 
