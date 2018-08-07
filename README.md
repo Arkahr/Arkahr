@@ -22,6 +22,9 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 Adds Popup when someone in your group does not have legendary gem in jewelery socket.
 
 - Popup will not show if: someone is lower than 70lvl, you are not in town, there are no players missing gems (obviously)
+<hr>
+<img style="float: left;" src="READMEpics/ConventionOfElementsBarPlugin2.png">
+<img style="float: right;" src="READMEpics/ConventionOfElementsBarPlugin.png">
 
 #### [ConventionOfElementsBarPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/ConventionOfElementsBarPlugin.cs)
 Shows time to your greates elemental bonus when wearing Convention of Elements ring in form of shrinkig bar.
