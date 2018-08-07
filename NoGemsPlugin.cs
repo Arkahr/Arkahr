@@ -59,7 +59,7 @@ namespace Turbo.Plugins.Arkahr
 
             var popUpWidth = longestLineInText * 8f; //make popup stretch with longer lines
             var popUpHeight = 110f;
-            LabelDecorator.Paint(Hud.Window.Size.Width / 2f - popUpWidth/2 + 10f, 0, popUpWidth, popUpHeight, text, "No Gems!");
+            LabelDecorator.Paint(Hud.Window.Size.Width / 2f - popUpWidth/2, 0, popUpWidth, popUpHeight, text, "No Gems!");
         }
 
         /// <summary>
