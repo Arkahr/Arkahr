@@ -3,6 +3,7 @@ Turbo.Plugins.Arkahr
 ```diff
 + LEFT click to download zip-> unzip -> Save As -> plugins/Arkahr/
 ```
+<hr>
 
 #### [TownPoIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
