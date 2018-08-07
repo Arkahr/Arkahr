@@ -5,19 +5,19 @@ Turbo.Plugins.Arkahr
 ```
 
 <hr>
-![TownPoIPlugin](READMEpics/TownPoIPlugin.png)
+<img style="float: left;" src="READMEpics/TownPoIPlugin.png">
 #### [TownPoIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
 
 - Enchanting cauldron directions label.
 - Followers minimap text.
 - Uber Bosses minimap text.
-
 - ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One ( [Code](https://pastebin.com/qvbpXQif) )
 
 <hr>
-![NoGemsPlugin](READMEpics/NoGemsPlugin.png)
-#### [NoGemsPlugin.cs]()
+<img style="float: left;" src="READMEpics/NoGemsPlugin.png">
+
+#### [NoGemsPlugin.cs]((https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/NoGemsPlugin.cs)
 Adds Popup when someone in your group does not have legendary gem in jewelery socket.
 
 - Popup will not show if: someone is lower than 70lvl, you are not in town, there are no players missing gems (obviously)
