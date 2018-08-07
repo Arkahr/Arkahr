@@ -22,6 +22,9 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 Adds Popup when someone in your group does not have legendary gem in jewelery socket.
 
 - Popup will not show if: someone is lower than 70lvl, you are not in town, there are no players missing gems (obviously)
+
+Plugin will work only with this extension [LegendaryPowerInfoExtensions](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/User5981/JackCeparouCompass/blob/master/Extensions/LegendaryPowerInfoExtensions.cs)
+put it in plugins\Jack\extensions\
 <hr>
 <img style="float: left;" src="READMEpics/ConventionOfElementsBarPlugin2.png">
 <img style="float: right;" src="READMEpics/ConventionOfElementsBarPlugin.png">
