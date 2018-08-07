@@ -4,6 +4,7 @@ Turbo.Plugins.Arkahr
 + LEFT click to download zip-> unzip -> Save As -> plugins/Arkahr/
 ```
 
+### TownPOIPlugin
 #### [TownPOIPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/TownPoIPlugin.cs)
 Adds minimap texts and labels for NPCs in town to find them easier.
 
@@ -12,8 +13,7 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 - Uber Bosses minimap text.
 
 - ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One ( [Code](https://pastebin.com/qvbpXQif) )
-
-## Cooldown Bars
+<hr>
 
 #### [ConventionOfElementsBarPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/ConventionOfElementsBarPlugin.cs)
 Shows time to your greates elemental bonus when wearing Convention of Elements ring in form of shrinkig bar.
