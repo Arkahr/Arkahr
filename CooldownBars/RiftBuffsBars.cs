@@ -53,7 +53,7 @@ namespace Turbo.Plugins.Arkahr
             var iconSize = 0f;
             var h = iconSize = 30f;
             var x = uiMinimapRect.Left;
-            var y = uiMinimapRect.Bottom + 200f;
+            var y = uiMinimapRect.Bottom + 250f;
             var w = uiMinimapRect.Width - iconSize;
             
             CooldownBarsPainter.PaintBuffs(RuleCalculator.PaintInfoList,uiMinimapRect.Left+30,uiMinimapRect.Bottom+200,uiMinimapRect.Width-30, 30,5);
