@@ -1,6 +1,7 @@
 using Turbo.Plugins.Default;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
+using System;
 
 namespace Turbo.Plugins.Arkahr
 {
@@ -44,7 +45,7 @@ namespace Turbo.Plugins.Arkahr
 
                     QuadraticBezierSegment qbs_2 = new QuadraticBezierSegment();
                     //add point for 2nd curve control point
-                    qbs_2.Point1 = o == Orientation.Left ? new RawVector2(x + arcWidth, y + height/2) : new RawVector2(x + width, y + height/2); //watch out for  fractions
+                    qbs_2.Point1 = o == Orientation.Left ? new RawVector2(x + arcWidth, y +  height/2) : new RawVector2(x + width, y + height/2); //watch out for  fractions
                     var bez2EndPoint = qbs_2.Point2 =  o == Orientation.Left ? new RawVector2(x + width, y) : new RawVector2(x + arcWidth, y); //its on top!
                     sink.AddQuadraticBezier(qbs_2);
                     
@@ -65,12 +66,36 @@ namespace Turbo.Plugins.Arkahr
             //DrawRect();
             //DrawBezier();
 
+            var hudWindow = Hud.Window.Size;
+            var screenCenterX = hudWindow.Width/2;
+            var screenCenterY = hudWindow.Height/2;
+
+            var arcWidth = 70;
+            var arcHeight = 413 * 0.7f;
+            var arcFat = 10;
+            var arcSpacing = 130;
+            
+            var leftArcX = screenCenterX - arcWidth*2 - arcSpacing;
+            var leftArcY = hudWindow.Height * 0.41f - arcHeight/2;
+            //var leftArcY = screenCenterY/2;// - arcHeight/2;
+
+            var rightArcX = screenCenterX + arcSpacing;
+            var rightArcY = leftArcY;
+
             var green = Hud.Render.CreateBrush(255,0,230,20,0);
             var blue = Hud.Render.CreateBrush(255, 0, 168, 255, 0);
             var orange = Hud.Render.CreateBrush(255, 255, 132, 0, 0);
+            var red = Hud.Render.CreateBrush(255, 255, 39, 3, 0);
+            var cream = Hud.Render.CreateBrush(255, 215, 201, 164, 0);
             
-            drawArc(300, 300, 200, 500, 50, green, Orientation.Left);
-            drawArc(800, 300, 200, 500, 50, orange, Orientation.Right);
+            var redT = Hud.Render.CreateBrush(70, 255, 39, 3, 0);
+            //var creamT = Hud.Render.CreateBrush(70, 255, 204, 0, 0);
+            var creamT = Hud.Render.CreateBrush(90, 215, 201, 164, 0);
+            
+            // drawArc(300, 300, 200, 500, 50, green, Orientation.Left);
+            // drawArc(800, 300, 200, 500, 50, orange, Orientation.Right);            
+            drawArc(leftArcX, leftArcY, arcWidth*2, arcHeight, arcFat, redT, Orientation.Left);
+            drawArc(rightArcX, rightArcY, arcWidth*2, arcHeight, arcFat, creamT, Orientation.Right);
 
         }    
 
@@ -102,6 +127,7 @@ namespace Turbo.Plugins.Arkahr
                         bz.AddLine(new RawVector2(450,100));
 
                         bz.EndFigure(FigureEnd.Closed);
+                        
                         bz.Close();
                     }
                     geometryBrush.DrawGeometry(bezier);
