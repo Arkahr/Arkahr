@@ -25,8 +25,6 @@ namespace Turbo.Plugins.Arkahr
 
         public void drawArc(float x, float y, float width, float height,  float arcWidth, IBrush brush, Orientation o)
         {
-
-            //if (orientation == Orientation.Left) 
             RawVector2 startPoint = o == Orientation.Left ? new RawVector2(x + width - arcWidth, y) : new RawVector2(x, y);
             using (var arc = Hud.Render.CreateGeometry()) 
             {
@@ -77,7 +75,6 @@ namespace Turbo.Plugins.Arkahr
             
             var leftArcX = screenCenterX - arcWidth*2 - arcSpacing;
             var leftArcY = hudWindow.Height * 0.41f - arcHeight/2;
-            //var leftArcY = screenCenterY/2;// - arcHeight/2;
 
             var rightArcX = screenCenterX + arcSpacing;
             var rightArcY = leftArcY;
@@ -99,134 +96,109 @@ namespace Turbo.Plugins.Arkahr
 
         }    
 
-        public void QuadraticDrawBezier()
+        public void DrawQuadraticBezier()
         {
 
            var geometryBrush = Hud.Render.CreateBrush(255, 0, 168, 255, 0);
-                using (var bezier = Hud.Render.CreateGeometry())
+            using (var bezier = Hud.Render.CreateGeometry())
+            {
+                
+                using (var bz = bezier.Open())
                 {
+                    RawVector2 begin = new RawVector2(400,100);
+                    bz.BeginFigure(begin, FigureBegin.Filled);
                     
-                    using (var bz = bezier.Open())
-                    {
-                       RawVector2 begin = new RawVector2(400,100);
-                        bz.BeginFigure(begin, FigureBegin.Filled);
-                        
 
-                        QuadraticBezierSegment bs = new QuadraticBezierSegment();
-                        bs.Point1 = new RawVector2(350,450); // nie ma w figurze ?                       
-                        bs.Point2 = new RawVector2(400,800);  //bez pt 3
-                        bz.AddQuadraticBezier(bs);
-                        
-                        bz.AddLine(new RawVector2(450,800));
+                    QuadraticBezierSegment bs = new QuadraticBezierSegment();
+                    bs.Point1 = new RawVector2(350,450); 
+                    bs.Point2 = new RawVector2(400,800); 
+                    bz.AddQuadraticBezier(bs);
+                    
+                    bz.AddLine(new RawVector2(450,800));
 
-                        QuadraticBezierSegment bs2 = new QuadraticBezierSegment();
-                        bs2.Point1 = new RawVector2(400,450);
-                        bs2.Point2 = new RawVector2(450,100);
+                    QuadraticBezierSegment bs2 = new QuadraticBezierSegment();
+                    bs2.Point1 = new RawVector2(400,450);
+                    bs2.Point2 = new RawVector2(450,100);
 
-                        bz.AddQuadraticBezier(bs2);
-                        bz.AddLine(new RawVector2(450,100));
+                    bz.AddQuadraticBezier(bs2);
+                    bz.AddLine(new RawVector2(450,100));
 
-                        bz.EndFigure(FigureEnd.Closed);
-                        
-                        bz.Close();
-                    }
-                    geometryBrush.DrawGeometry(bezier);
-                }            
+                    bz.EndFigure(FigureEnd.Closed);
+                    
+                    bz.Close();
+                }
+                geometryBrush.DrawGeometry(bezier);
+            }            
         }
 
 
         public void DrawBezier()
         {
-           var geometryBrush = Hud.Render.CreateBrush(220, 0, 0, 0, 0);
-                using (var bezier = Hud.Render.CreateGeometry())
+            var geometryBrush = Hud.Render.CreateBrush(220, 0, 0, 0, 0);
+            using (var bezier = Hud.Render.CreateGeometry())
+            {
+                
+                using (var bz = bezier.Open())
                 {
+                    // ArcSegment seg = new ArcSegment();                        
+                    // seg.Point = new RawVector2(50,100);
+                    // seg.Size = new Size2F(10,500);
+                    // seg.RotationAngle = 30;
+                    // seg.SweepDirection = SweepDirection.Clockwise;
+                    // seg.ArcSize = ArcSize.Large;
+                    //bz.AddArc(seg);
+
+                    RawVector2 begin = new RawVector2(100,100); //curve start point
+                    bz.BeginFigure(begin, FigureBegin.Filled);
                     
-                    using (var bz = bezier.Open())
-                    {
-                        // for (int angle = startAngle; angle <= endAngle; angle++)
-                        // {
-                        //     var mx = rad * (float)Math.Cos((angle - 90) * Math.PI / 180.0f);
-                        //     var my = rad * (float)Math.Sin((angle - 90) * Math.PI / 180.0f);
-                        //     var vec = new Vector2(rect.Center.X + mx, rect.Center.Y + my);
-                        //     gs.AddLine(vec);
-                        // }
 
-                        // ArcSegment seg = new ArcSegment();                        
-                        // seg.Point = new RawVector2(50,100);
-                        // seg.Size = new Size2F(10,500);
-                        // seg.RotationAngle = 30;
-                        // seg.SweepDirection = SweepDirection.Clockwise;
-                        // seg.ArcSize = ArcSize.Large;
-                        //bz.AddArc(seg);
+                    BezierSegment bs = new BezierSegment();
+                    bs.Point1 = new RawVector2(50,500); // 1st curve control point 
+                    bs.Point2 = new RawVector2(50,500); // 2nd curve control point
+                    bs.Point3 = new RawVector2(100,800); // end point
+                    bz.AddBezier(bs);
+                    
+                    bz.AddLine(new RawVector2(150,800));
 
-                        RawVector2 begin = new RawVector2(100,100);
-                        bz.BeginFigure(begin, FigureBegin.Filled);
-                        
+                    BezierSegment bs2 = new BezierSegment();
+                    bs2.Point1 = new RawVector2(100,500);
+                    bs2.Point2 = new RawVector2(100,500);
+                    bs2.Point3 = new RawVector2(150,100);
+                    
+                    bz.AddBezier(bs2);
+                    bz.AddLine(new RawVector2(100,100));
 
-                        BezierSegment bs = new BezierSegment();
-                        bs.Point1 = new RawVector2(50,500); // nie ma w figurze ?
-                        bs.Point2 = new RawVector2(50,500);  //punkt przegiecia
-                        bs.Point3 = new RawVector2(100,800);  //bez pt 3
-                        bz.AddBezier(bs);
-                        
-                        bz.AddLine(new RawVector2(150,800));
-                        //bz.SetFillMode( SharpDX.Direct2D1.FillMode.Alternate);
-
-
-                        //bz.AddLine(new RawVector2(100,500));
-
-
-                        BezierSegment bs2 = new BezierSegment();
-                        bs2.Point1 = new RawVector2(100,500);
-                        bs2.Point2 = new RawVector2(100,500);
-                        bs2.Point3 = new RawVector2(150,100);
-                        
-                        //bz.AddLine(new RawVector2(600,900));
-                        //bz.AddLine(new RawVector2(550,300));
-                       // bz.AddLine(new RawVector2(500,300));
-                        
-
-                        bz.AddBezier(bs2);
-                       bz.AddLine(new RawVector2(100,100));
-
-                        bz.EndFigure(FigureEnd.Closed);
-                        bz.Close();
-                    }
-                    geometryBrush.DrawGeometry(bezier);
+                    bz.EndFigure(FigureEnd.Closed);
+                    bz.Close();
                 }
+                geometryBrush.DrawGeometry(bezier);
+            }
 
         }
 
         public void DrawRect() 
         {
            var geometryBrush = Hud.Render.CreateBrush(255, 255, 132, 0, 0);
-                using (var rectangle = Hud.Render.CreateGeometry())
+            using (var rectangle = Hud.Render.CreateGeometry())
+            {
+                
+                using (var re = rectangle.Open())
                 {
-                    
-                    using (var re = rectangle.Open())
-                    {
-                        re.BeginFigure(new RawVector2(100,100), FigureBegin.Filled);
+                    re.BeginFigure(new RawVector2(100,100), FigureBegin.Filled);
 
-                        RawVector2[] points = new RawVector2[6];
-                        //points[0] = new RawVector2(100,100);
-                        points[0] = new RawVector2(300,100);
-                         points[1] = new RawVector2(300,300);
-                        points[2] = new RawVector2(100,300);
-                         points[3] = new RawVector2(100,100);
+                    RawVector2[] points = new RawVector2[6];
+                    points[0] = new RawVector2(300,100);
+                    points[1] = new RawVector2(300,300);
+                    points[2] = new RawVector2(100,300);
+                    points[3] = new RawVector2(100,100);
+                    re.AddLines(points);
 
-                        re.AddLines(points);
-
-                       
-
-                        re.EndFigure(FigureEnd.Closed);
-                        re.Close();
-                    }
-                    geometryBrush.DrawGeometry(rectangle);
+                    re.EndFigure(FigureEnd.Closed);
+                    re.Close();
                 }
+                geometryBrush.DrawGeometry(rectangle);
+            }
 
         }
-
-
-
     }
 }
