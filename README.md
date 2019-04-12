@@ -16,7 +16,7 @@ Adds minimap texts and labels for NPCs in town to find them easier.
 - ~~Kadala Label with bood shard counter~~ [Improved version](https://www.ownedcore.com/forums/diablo-3/turbohud/turbohud-plugin-review-zone/677711-v7-6-international-one-shardsonkadala.html) by Mr. One ( [Code](https://pastebin.com/qvbpXQif) )
 
 <hr>
-<img style="float: left;" src="READMEpics/NoGemsPlugin.png">
+<img style="float: left;" src="READMEpics/.png">
 
 #### [NoGemsPlugin.cs](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/Arkahr/Arkahr/blob/master/NoGemsPlugin.cs)
 Adds Popup when someone in your group does not have legendary gem in jewelery socket.
